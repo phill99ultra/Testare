@@ -18,7 +18,7 @@ var localStorageAdd = function(){
 localStorageAdd();
 
 var dataTaken = function(){
-    JSON.parse(localStorage.getItem("collection"));
+    JSON.parse(localStorage.getItem("Data_Base"));
 }
 
 var completePosts = function(){
