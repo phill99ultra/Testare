@@ -17,11 +17,14 @@ var localStorageAdd = function(){
 }
 localStorageAdd();
 
+var dataTaken = function(){
+    JSON.parse(localStorage.getItem("collection"));
+}
+
 var completePosts = function(){
-    var dataTaken = JSON.parse(localStorage.getItem("collection"));
     var post = document.getElementById('posts');
     post.innerHTML = '';
-    for( var i = 0; i < dataTaken.length; i++){
+    for(var i in dataTaken){
           newPost(i);
     }
 }
@@ -31,7 +34,7 @@ var newPost = function(number){
 
     var tags = function(num){
         tagButton = '';
-        for(var tag = 0; tag < dataTaken[num].tags; tag++){
+        for(var tag in dataTaken[num].tags){
            tagButton += `<button class="btn btn-xs btn-default">${dataTaken[number].tags[tag]}</button>`;
         }
         return tagButton;
