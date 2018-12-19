@@ -1,33 +1,55 @@
-//javascript method
-/* window.onload = function(){
-    var http = new XMLHttpRequest();
-    http.onreadystatechange = function(){ 
-        if(http.readyState == 4 && http.status == 200){ 
-        console.log(JSON.parse(http.response));
-        }
-    };
-    http.open("GET", "json/posts.json", true);
-    http.send();
-    
-}; */
-//jquery method   preluam datele din documentul extern in fisierul nostru
-var json = $.get("json/posts.json", function(data){
-    //console.log(data);
-    return data;
-});
-//adaugam datele din fisier in localstorage
+var json = (function () {
+    var json = null;
+    $.ajax({
+       'async': false,
+       'global': false,
+       'url': "../json/posts.json",
+       'dataType': "json",
+       'success': function (data) {
+          json = data;
+       }
+    });
+    return json;
+ })();
+
 var localStorageAdd = function(){
     localStorage.setItem('Date_Base', JSON.stringify(json));
 }
 localStorageAdd();
 
 var completePosts = function(){
-    var dataTaken = JSON.parse(localStorage.getItem('Date_Base'));
+    var dataTaken = JSON.parse(localStorage.getItem("collection"));
     var post = document.getElementById('posts');
-    console.log(dataTaken);
-    /* for(i=0; i < dataTaken.length; i++){
-
-    } */
-    
+    post.innerHTML = '';
+    for( var i = 0; i < dataTaken.length; i++){
+          newPost(i);
+    }
 }
-completePosts()
+
+var newPost = function(number){
+    var post = document.getElementById('posts');
+
+    var tags = function(num){
+        tagButton = '';
+        for(var tag = 0; tag < dataTaken[num].tags; tag++){
+           tagButton += `<button class="btn btn-xs btn-default">${dataTaken[number].tags[tag]}</button>`;
+        }
+        return tagButton;
+    }
+    var button_T = tags(number);
+    post.innerHTML += `<article>
+                         <header>
+                           <h3>${dataTaken[number].title}</h3>
+                         </header>
+                         <section>
+                           <p>${dataTaken[number].body}</p>
+                         </section>
+                         <footer>
+                           <div class="tags">${button_T}</div>
+                         </footer>
+                         <div class="controls">
+                           <button class="btn btn-danger btn-mini" onclick="deleteArticle(${number})">удалить</button>
+                         </div>
+                       </article>`;
+}
+completePosts();
