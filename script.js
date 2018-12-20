@@ -1,4 +1,4 @@
-var json = (function () {
+/* var get_data = (function () {
     var json = null;
     $.ajax({
        'async': false,
@@ -10,10 +10,26 @@ var json = (function () {
        }
     });
     return json;
- })();
+ })(); */
 
+function getData(){
+    var json = [];
+    $.get("json/posts.json")
+      .done(function(data){
+          json = JSON.stringify(data);
+          return json;
+    })
+      .fail(function(data){
+          console.error('Fail!');
+      })
+}
+getData();
+
+var add_button = document.getElementById('post-add');
+
+ 
 var localStorageAdd = function(){
-    localStorage.setItem('date_base', JSON.stringify(json));
+    localStorage.setItem('date_base', getData);
 }
 localStorageAdd();
 
