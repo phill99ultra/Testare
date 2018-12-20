@@ -62,14 +62,14 @@ function delete_tag(number) {
  }
 
  var add_new_post = function(post){
-    //var title = post.title.value;
-    //var body = post.body.value;
-    //var tags = post.tags.value;
+    var title = post.title.value;
+    var body = post.body.value;
+    var tags = post.tags.value;
     var new_post = {
            "id" : data_taken.length + 1,
-        "title" : post.title.value,
-         "body" : post.body.value,
-         "tags" : post.tags.value
+        "title" : title,
+         "body" : body,
+         "tags" : tags
     };
 
     tags = tags.split(",");
@@ -83,7 +83,8 @@ function delete_tag(number) {
        if (tags.length < 1 && !reg.test(tags)) {
           return false;
        }
-       data_taken.push(new_post);
-       localStorage.setItem("date_base", JSON.stringify(data_taken));
-       complete_posts()
+       console.log(new_post);
+       //data_taken.push(new_post);
+       //localStorage.setItem("date_base", JSON.stringify(data_taken));
+       //complete_posts()
   }
