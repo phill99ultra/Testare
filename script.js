@@ -1,51 +1,44 @@
-/* var get_data = (function () {
-    var json = null;
-    $.ajax({
-       'async': false,
-       'global': false,
-       'url': "../json/posts.json",
-       'dataType': "json",
-       'success': function (data) {
-          json = data;
-       }
-    });
-    return json;
- })(); */
- var json = [];
+
+var json = [];
 function getData(){
     $.get("json/posts.json")
       .done(function(data){
           json = data;
-          //return json;
+          localStorageAdd();
           console.log('DONE!')
     })
       .fail(function(data){
           console.error('Fail!');
       })
 }
-getData();
-console.log(json);
 
 var formAddPost = document.getElementById('post-add');
 var post = document.getElementById("posts");
 var buttonAddPost = formAddPost.getElementsByTagName('button')[0];  
 
 function init() {
+    if(localStorage.getItem('date_base')){
+        parsing();
+    } else {
+        getData();
+        parsing()
+    }
     // Add event to form button
-    buttonAddPost.addEventListener("click", function (event) {  //la click functia primeste 
+       buttonAddPost.addEventListener("click", function (event) {  //la click functia primeste 
        event.preventDefault();    //previne submit
        //alert('New Post Added!');   //
        addNewPost();
     });
  }
 
- 
 var localStorageAdd = function(){
-    localStorage.setItem('date_base', json);
+    localStorage.setItem('date_base', JSON.stringify(json));
 }
-localStorageAdd();
 
-/* var data_taken = JSON.parse(localStorage.getItem("date_base"));
+var parsing = function(){
+  data_taken = JSON.parse(localStorage.getItem("date_base"));
+}
+var data_taken = '';
 
 var complete_posts = function(){
     post.innerHTML = '';
@@ -86,7 +79,7 @@ function delete_tag(number) {
     dataTaken.splice(number, 1);
     localStorage.setItem("date_base", JSON.stringify(data_taken));
     complete_posts();
- } */
+ } 
 
  function addNewPost() {
     var title;
