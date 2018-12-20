@@ -73,14 +73,14 @@ function delete_tag(number) {
     };
 
     tags = tags.split(",");
-       var reg = /^[а-яА-ЯёЁa-zA-Z 0-9]+$/;
-       if (title.length < 5 && !reg.test(title)) {
+       var reg_ex = /^[а-яА-ЯёЁa-zA-Z 0-9]+$/;
+       if (title.length < 5 && !reg_ex.test(title)) {
           return false;
        }
-       if (body.length < 30 && !reg.test(body)) {
+       if (body.length < 30 && !reg_ex.test(body)) {
           return false;
        }
-       if (tags.length < 1 && !reg.test(tags)) {
+       if (tags.length < 1 && !reg_ex.test(tags)) {
           return false;
        }
        console.log(new_post);
