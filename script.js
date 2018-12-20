@@ -11,32 +11,43 @@
     });
     return json;
  })(); */
-
+ var json = [];
 function getData(){
-    var json = [];
     $.get("json/posts.json")
       .done(function(data){
-          json = JSON.stringify(data);
-          return json;
+          json = data;
+          //return json;
+          console.log('DONE!')
     })
       .fail(function(data){
           console.error('Fail!');
       })
 }
 getData();
+console.log(json);
 
-var add_button = document.getElementById('post-add');
+var formAddPost = document.getElementById('post-add');
+var post = document.getElementById("posts");
+var buttonAddPost = formAddPost.getElementsByTagName('button')[0];  
+
+function init() {
+    // Add event to form button
+    buttonAddPost.addEventListener("click", function (event) {  //la click functia primeste 
+       event.preventDefault();    //previne submit
+       //alert('New Post Added!');   //
+       addNewPost();
+    });
+ }
 
  
 var localStorageAdd = function(){
-    localStorage.setItem('date_base', getData);
+    localStorage.setItem('date_base', json);
 }
 localStorageAdd();
 
-var data_taken = JSON.parse(localStorage.getItem("date_base"));
+/* var data_taken = JSON.parse(localStorage.getItem("date_base"));
 
 var complete_posts = function(){
-    var post = document.getElementById("posts");
     post.innerHTML = '';
     for(var i in data_taken){
           new_post(i);
@@ -75,32 +86,47 @@ function delete_tag(number) {
     dataTaken.splice(number, 1);
     localStorage.setItem("date_base", JSON.stringify(data_taken));
     complete_posts();
- }
+ } */
 
- var add_new_post = function(post){
-    var title = post.title.value;
-    var body = post.body.value;
-    var tags = post.tags.value;
-    var new_post = {
-           "id" : data_taken.length + 1,
-        "title" : title,
-         "body" : body,
-         "tags" : tags
+ function addNewPost() {
+    var title;
+    var body;
+    var tags;
+    var formInputs;
+    var newPost = {
+       title: '',
+       body: '',
+       tags: []
     };
-
-    tags = tags.split(",");
-       var reg_ex = /^[а-яА-ЯёЁa-zA-Z 0-9]+$/;
-       if (title.length < 5 && !reg_ex.test(title)) {
-          return false;
+ 
+    formInputs = formAddPost.querySelectorAll('[name]');
+ 
+    for (var input of formInputs) {
+       if (input.name == 'title') {
+          title = input.value;
        }
-       if (body.length < 30 && !reg_ex.test(body)) {
-          return false;
+       if (input.name == 'body') {
+          body = input.value;
        }
-       if (tags.length < 1 && !reg_ex.test(tags)) {
-          return false;
+       if (input.name == 'tags') {
+          tags = input.value;
        }
-       console.log(new_post);
-       //data_taken.push(new_post);
-       //localStorage.setItem("date_base", JSON.stringify(data_taken));
-       //complete_posts()
-  }
+    }
+ 
+    newPost.title = title;
+    newPost.body = body;
+    newPost.tags = tags.split(",");
+    var reg = /^[а-яА-ЯёЁa-zA-Z 0-9]+$/;
+         if (title.length < 5 && !reg.test(title)) {
+            return false;
+         }
+         if (body.length < 30 && !reg.test(body)) {
+            return false;
+         }
+         if (tags.length < 1 && !reg.test(tags)) {
+            return false;
+         }
+ 
+    console.log(newPost);
+}
+init();
