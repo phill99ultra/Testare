@@ -17,12 +17,12 @@ var localStorageAdd = function(){
 }
 localStorageAdd();
 
-var dataTaken = JSON.parse(localStorage.getItem("date_base"));
+var data_taken = JSON.parse(localStorage.getItem("date_base"));
 
 var complete_posts = function(){
     var post = document.getElementById("posts");
     post.innerHTML = '';
-    for(var i in dataTaken){
+    for(var i in data_taken){
           new_post(i);
     }
 }
@@ -31,19 +31,19 @@ var new_post = function(number){
     var article = document.getElementById("posts");
 
     var tags = function(num){
-        tagButton = '';
-        for(var tag in dataTaken[num].tags){
-           tagButton += `<button class="btn btn-xs btn-default">${dataTaken[number].tags[tag]}</button>`;
+        tag_button = '';
+        for(var tag in data_taken[num].tags){
+           tag_button += `<button class="btn btn-xs btn-default">${data_taken[number].tags[tag]}</button>`;
         }
-        return tagButton;
+        return tag_button;
     }
     var button_t = tags(number);
     article.innerHTML += `<article>
                          <header>
-                           <h3>${dataTaken[number].title}</h3>
+                           <h3>${data_taken[number].title}</h3>
                          </header>
                          <section>
-                           <p>${dataTaken[number].body}</p>
+                           <p>${data_taken[number].body}</p>
                          </section>
                          <footer>
                            <div class="tags">${button_t}</div>
@@ -57,14 +57,21 @@ complete_posts();
 
 function delete_tag(number) {                                                                 
     dataTaken.splice(number, 1);
-    localStorage.setItem("date_base", JSON.stringify(dataTaken));
+    localStorage.setItem("date_base", JSON.stringify(data_taken));
     complete_posts();
  }
 
  var add_new_post = function(post){
-    var title = post.title.value;
-    var body = post.body.value;
-    var tags = post.tags.value;
+    //var title = post.title.value;
+    //var body = post.body.value;
+    //var tags = post.tags.value;
+    var new_post = {
+           "id" : data_taken.length + 1,
+        "title" : post.title.value,
+         "body" : post.body.value,
+         "tags" : post.tags.value
+    };
+
     tags = tags.split(",");
        var reg = /^[а-яА-ЯёЁa-zA-Z 0-9]+$/;
        if (title.length < 5 && !reg.test(title)) {
@@ -76,13 +83,7 @@ function delete_tag(number) {
        if (tags.length < 1 && !reg.test(tags)) {
           return false;
        }
-
-       dataTaken[id] += 1;
-       dataTaken[title] += title;
-       dataTaken[body] += body;
-       dataTaken[tags] += tags;
-
-      dataTaken.push(post);
-      localStorage.setItem("Data_Base", JSON.stringify(dataTaken));
-      completePosts();
+       data_taken.push(new_post);
+       localStorage.setItem("date_base", JSON.stringify(data_taken));
+       complete_posts()
   }
