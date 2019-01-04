@@ -26,7 +26,7 @@
             parsing();           
             complete_posts();    
             console.log("complete");  
-          }, 5000);
+          }, 1000);
      }
         buttonAddPost.addEventListener("click", function (event) { 
         event.preventDefault();   
@@ -72,7 +72,7 @@
                             <div class="tags">${button_t}</div>
                           </footer>
                           <div class="controls">
-                            <button class="btn btn-danger btn-mini" onclick="delete_tag(${number})">удалить</button>
+                            <button class="btn btn-danger btn-mini" onclick="delete_post(${number})">удалить</button>
                           </div>
                         </article>`; 
  }
@@ -123,7 +123,12 @@
           }
      //console.log(newPost); 
      data_taken.push(newPost);  
-     localStorage.setItem("date_base", JSON.stringify(data_taken)); 
+     localStorage.setItem("date_base", JSON.stringify(data_taken));
+     for (var input of formInputs){
+     title = "";
+     body = "";
+     tags = "";
+     } 
      complete_posts()  
  }
  init();  
